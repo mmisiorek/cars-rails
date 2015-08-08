@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :cars
   root 'application#showAllCars'
 
   get '/user/login' => 'user#login'

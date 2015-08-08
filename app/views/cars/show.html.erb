@@ -1,0 +1,69 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="page-header">
+      <h1><%= @pageTitle %></h1>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="panel-header panel-header-inline">
+          <h2>General</h2>
+        </div>
+
+        <!--<label>Photo of the car</label> <br>-->
+        <!--<div class="details-box">-->
+          <!--<img ng-src="{{ car.photo64 }}" />-->
+        <!--</div>-->
+
+        <div class="row">
+          <div class="col-md-6">
+            <label>Brand of the car</label>
+            <div class="details-box">
+              <%= @car.brand %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label>Model of the car</label>
+            <div class="details-box">
+              <%= @car.model %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for='car-date'>Manufactured Date</label>
+            <div class="details-box">
+              <%= @car.manufactured_date %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for='car-regnumber'>Registration Number</label>
+            <div class="details-box">
+              <%= @car.registration_number %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="panel-header panel-header-inline">
+          <h2>Availability</h2>
+        </div>
+
+        <div class="row available-row">
+          <div class="col-md-6">
+            <% if @car.is_available %>
+                <span class="text-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Unavailable</span>
+            <% else %>
+                <span class="text-success"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Available</span>
+            <% end %>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

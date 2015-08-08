@@ -11,12 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729175917) do
+ActiveRecord::Schema.define(version: 20150807182942) do
 
   create_table "cars", force: :cascade do |t|
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.string   "brand"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "model"
+    t.datetime "manufactured_date"
+    t.string   "photo_file_name"
+    t.string   "registration_number"
+    t.boolean  "is_available"
   end
 
 end
