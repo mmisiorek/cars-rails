@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import "Bootstrap/bootstrap.min.css";
+@import "bootstrap";
 
 body {
   padding-top: 70px;
@@ -65,7 +65,7 @@ div.panel-60 {
   margin-right: auto;
 }
 
-table#list-table button.action {
+table#list-table a.action {
   display: block;
   width: 100%;
 }

@@ -25,16 +25,35 @@ class CarsController < ApplicationController
   end
 
   def new
+    @activePage = "newCar"
+
+    @car = Car.new
 
   end
 
   def create
-    @car = Car.find(params[:id])
+    @car = Car.create(car_params)
+    if @car.valid?
+      @car.save
 
-    respond_to do |format|
-      format.html
-      format.json
+      redirect_to action: 'show', id: @car.id
+      return
     end
+
+    redirect_to action: 'index'
   end
 
+  def destroy
+    @car = Car.find(params[:id])
+
+    @car.destroy
+
+    redirect_to action: 'index'
+  end
+
+  private
+
+  def car_params
+    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number)
+  end
 end

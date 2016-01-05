@@ -22,5 +22,9 @@ module Cars
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    Dir.glob("vendor/assets/*").select { |f| File.directory? f }.each do |dir|
+      config.assets.paths << dir
+    end
   end
 end

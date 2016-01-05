@@ -58,9 +58,11 @@
                     </td>
                     <td><%= car.registration_number %></td>
                     <td>
-                      <button type="button" class="btn btn-primary action"><span class="glyphicon glyphicon-search"></span> View</button> <br>
+                      <%= link_to 'View', {controller: 'cars', action: 'show', id: car.id }, {:class => 'btn btn-primary action js-btn-car-view'} %>
+                      <!-- <button type="button" class="btn btn-primary action js-btn-car-view" data-code="<%= car.id %>"><span class="glyphicon glyphicon-search"></span> View</button> <br>
                       <button type="button" class="btn btn-primary action"><span class="glyphicon glyphicon-edit"></span> Edit</button> <br>
-                      <button type="button" class="btn btn-danger action""><span class="glyphicon glyphicon-trash"></span> Remove</button>
+                      <button type="button" class="btn btn-danger action""><span class="glyphicon glyphicon-trash"></span> Remove</button> <br> -->
+                      <%= link_to 'Remove', {controller: 'cars', action: 'destroy', id: car.id}, {class: 'btn btn-danger action', method: :delete} %>
                     </td>
                   </tr>
               <% end %>
