@@ -31,6 +31,12 @@ class CarsController < ApplicationController
 
   end
 
+  def edit
+    @activePage = "editCar"
+
+    @car = Car.find(params[:id])
+  end
+
   def create
     @car = Car.create(car_params)
     if @car.valid?

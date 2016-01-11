@@ -4,4 +4,8 @@ class ApplicationController < ActionController::Base
     render json: Car.all()
   end
 
+  protected
+
+
+
 end
