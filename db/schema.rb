@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111185656) do
+ActiveRecord::Schema.define(version: 20160121192443) do
 
   create_table "cars", force: :cascade do |t|
     t.datetime "created_at",          null: false
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 20160111185656) do
     t.string   "photo_file_name"
     t.string   "registration_number"
     t.boolean  "is_available"
+    t.integer  "photo_id"
+  end
+
+  add_index "cars", ["photo_id"], name: "index_cars_on_photo_id"
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "original_filename"
+    t.string   "real_filename"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "path"
+    t.string   "token"
   end
 
   create_table "users", force: :cascade do |t|

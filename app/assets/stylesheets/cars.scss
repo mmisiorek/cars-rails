@@ -2,12 +2,19 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$icon-font-path: "../assets/bootstrap/";
+
 @import "bootstrap";
+@import "bootstrap/glyphicons";
 
 body {
   padding-top: 70px;
   background-color: #e7e7e7;
   overflow: scroll;
+}
+
+metro {
+  background-image: url('#{$icon-font-path}');
 }
 
 #main-navbar {
@@ -65,9 +72,14 @@ div.panel-60 {
   margin-right: auto;
 }
 
-table#list-table a.action {
+table#list-table .action {
   display: block;
   width: 100%;
+  margin-bottom: 10px;
+  
+  :not(:last) {
+    padding-bottom: 0px;
+  }
 }
 
 div.details-box {

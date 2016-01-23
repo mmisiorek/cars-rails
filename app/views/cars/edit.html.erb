@@ -9,39 +9,72 @@
             <div class="panel-header panel-header-inline">
               <h2>General</h2>
             </div>
-
-            <!--<label>Photo of the car</label> <br>-->
-            <!--<div class="details-box">-->
-            <!--<img ng-src="{{ car.photo64 }}" />-->
-            <!--</div>-->
+            
+            <label>Photo of the car</label> <br>
+            <div class="details-box">
+              <% if @car.photo != nil %>
+                <%= image_tag url_for(controller: 'document', action: 'show', id: @car.photo.id, token: @car.photo.token, 
+                          width: 1200, height: 300) %> <br><br>
+              <% end %>
+              <%= f.file_field :photo, class: 'form-control' %>
+            </div>
 
             <div class="row">
               <div class="col-md-6">
-                <label>Brand of the car</label>
+                <%= label_tag nil, "Brand of the car", class: @car.errors.include?(:brand) ? "form-error-label" : "" %>
                 <div class="details-box">
                   <%= f.text_field :brand, class: 'form-control' %>
                 </div>
+                <% if @car.errors.include? :brand %>
+                  <div class="form-error">
+                    <% @car.errors.full_messages_for(:brand).each do |message| %>
+                      <%= message %> <br>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
               <div class="col-md-6">
                 <label>Model of the car</label>
+                <%= label_tag nil, "Model of the car", class: @car.errors.include?(:model) ? "form-error-label" : "" %>
                 <div class="details-box">
                   <%= f.text_field :model, class: 'form-control' %>
                 </div>
+                <% if @car.errors.include? :model %>
+                  <div class="form-error">
+                    <% @car.errors.full_messages_for(:model) do |message| %>  
+                      <%= message %> <br>                  
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
-                <label for='car-date'>Manufactured Date</label>
+                <%= label_tag 'car-date', "Manufactured Date", class: @car.errors.include?(:manufactured_date) ? "form-error-label" : "" %>
                 <div class="details-box">
                   <%= f.date_select :manufactured_date, class: 'form-control' %>
                 </div>
+                <% if @car.errors.include? :manufactured_date %>
+                  <div class="form-error">
+                    <% @car.errors.full_messages_for(:manufactured_date) do |message| %>
+                      <%= message %> <br>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
               <div class="col-md-6">
-                <label for='car-regnumber'>Registration Number</label>
+                <%= label_tag "car-regnumber", "Registration Number", class: @car.errors.include?(:registation_number) ? "form-error-label" : ""%>
                 <div class="details-box">
                   <%= f.text_field :registration_number, class: 'form-control' %>
                 </div>
+                <% if @car.errors.include? :registration_number %>
+                  <div class="form-error">
+                    <% @car.errors.full_messages_for(:registration_number).each do |message| %>
+                      <%= message %> <br>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>

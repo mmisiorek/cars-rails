@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
 
   resources :cars
-  root 'application#showAllCars'
+  root 'cars#index'
 
   get 'user/signup' => "user#sign_up"
   post 'user/signup' => "user#create"
+  get 'document/:id/:token/:width/:height' => 'document#show'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,7 +1,14 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="page-header">
-      <h1><%= @pageTitle %></h1>
+      <h1>
+        <%= @pageTitle %>
+        <% editPath = {controller: 'cars', action: 'edit', id: @car.id } %>
+        <%= link_to editPath, class: 'btn btn-primary pull-right' do %>
+          <span class="glyphicon glyphicon-edit"></span>
+          Edit 
+        <% end %>
+      </h1>
     </div>
     <div class="panel panel-default">
       <div class="panel-body">
@@ -9,10 +16,13 @@
           <h2>General</h2>
         </div>
 
-        <!--<label>Photo of the car</label> <br>-->
-        <!--<div class="details-box">-->
-          <!--<img ng-src="{{ car.photo64 }}" />-->
-        <!--</div>-->
+        <% if @car.photo != nil %>
+        <label>Photo of the car</label> <br>
+        <div class="details-box">
+          <%= image_tag url_for(controller: 'document', action: 'show', id: @car.photo.id, token: @car.photo.token, 
+                    width: 1200, height: 300) %>
+        </div>
+        <% end %>
 
         <div class="row">
           <div class="col-md-6">
@@ -55,9 +65,9 @@
         <div class="row available-row">
           <div class="col-md-6">
             <% if @car.is_available %>
-                <span class="text-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Unavailable</span>
-            <% else %>
                 <span class="text-success"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Available</span>
+            <% else %>
+                <span class="text-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Unavailable</span>
             <% end %>
           </div>
           <div class="col-md-6">

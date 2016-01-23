@@ -50,7 +50,7 @@
                     <td><%= car.id %></td>
                     <td><%= car.brand %></td>
                     <td><%= car.model %></td>
-                    <td><%= car.manufactured_date %></td>
+                    <td><%= car.manufactured_date.strftime("%Y-%m-%d") %></td>
                     <td>
                       <% if car.is_available %>
                         <span class="glyphicon glyphicon-ok"></span>
@@ -60,11 +60,17 @@
                     </td>
                     <td><%= car.registration_number %></td>
                     <td>
-                      <%= link_to 'View', {controller: 'cars', action: 'show', id: car.id }, {:class => 'btn btn-primary action js-btn-car-view'} %>
-                      <!-- <button type="button" class="btn btn-primary action js-btn-car-view" data-code="<%= car.id %>"><span class="glyphicon glyphicon-search"></span> View</button> <br>
-                      <button type="button" class="btn btn-primary action"><span class="glyphicon glyphicon-edit"></span> Edit</button> <br>
-                      <button type="button" class="btn btn-danger action""><span class="glyphicon glyphicon-trash"></span> Remove</button> <br> -->
-                      <%= link_to 'Edit', {controller: 'cars', action: 'edit', id: car.id}, {:class => 'btn btn-primary action'} %>
+                      
+                   	  <% carViewPath = {controller: 'cars', action: 'show', id: car.id } %>
+                      <%= link_to carViewPath, {:class => 'btn btn-primary action js-btn-car-view'} do %>
+                      	<i class="glyphicon glyphicon-search"></i>
+                      	View
+                      <% end %>
+					            <% carEditPath = {controller: 'cars', action: 'edit', id: car.id}%>                      
+                      <%= link_to carEditPath, {:class => 'btn btn-primary action'} do %>
+                      	<i class="glyphicon glyphicon-edit"></i>
+                      	Edit
+                      <% end %>
                       <% carDeletePath = {:controller => 'cars', :action => 'destroy', :id => car.id} %>
                       <%= form_tag carDeletePath, method: :delete do %>
                         <%= button_tag class: 'btn btn-danger action' do %>
