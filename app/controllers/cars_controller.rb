@@ -11,7 +11,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => @cars }
+      format.json { render :json => { 'cars' => @cars } }
     end
   end
 
@@ -43,16 +43,38 @@ class CarsController < ApplicationController
   def create
     obj_params = car_params
     documentManager = ApplicationHelper::DocumentManager.new
-    obj_params[:photo] = documentManager.init_document(obj_params[:photo])
-    
+
+    if obj_params[:photo] != nil
+      obj_params[:photo] = documentManager.init_document(obj_params[:photo])
+    end
+
     @car = Car.create(obj_params)
     if @car.valid?
       @car.save
 
-      redirect_to action: 'show', id: @car.id
-      return
-    else 
-      render :template => "cars/new"
+
+      respond_to do |format|
+        format.html do
+          redirect_to action: 'show', id: @car.id
+        end
+
+        format.json do
+          render :json => { :success => true }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :template => "cars/new"
+        end
+
+        format.json do
+          render :json => {
+                    :success => false, 
+                    :errors => @car.errors.full_messages
+                 }
+        end
+      end
     end
   end
   
@@ -70,13 +92,30 @@ class CarsController < ApplicationController
     end
     
     if @car.update_attributes(obj_params)
-      redirect_to action: 'show', id: @car.id
-      
-      if obj_params[:photo] != nil and old_photo_path != nil 
+
+      if obj_params[:photo] != nil and old_photo_path != nil
         FileUtils.rm old_photo_path
       end
-    else 
-      render :template => 'cars/edit'
+
+      respond_to do |format|
+        format.html do
+          redirect_to action: 'show', id: @car.id
+        end
+
+        format.json do
+          render :json => { 'success' => true }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          render :template => 'cars/edit'
+        end
+
+        format.json do
+          render :json => { 'success' => false, 'errors' => @car.errors.full_messages }
+        end
+      end
     end
   end
 

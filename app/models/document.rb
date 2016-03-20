@@ -6,6 +6,16 @@ class Document < ActiveRecord::Base
   def path_to_file 
     path+"/"+real_filename
   end
+
+  def as_json(options={})
+
+    {
+        :id => self.id,
+        :token => self.token,
+        :originalFilename => self.original_filename
+    }
+
+  end
   
   private 
   

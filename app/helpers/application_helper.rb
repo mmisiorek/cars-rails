@@ -16,7 +16,7 @@ end
   
 class DocumentManager 
   def initialize()
-    @path = "/home/marcin/rails-pics"
+    @path = File.expand_path("~")+"/rails-pics"
   end
   
   def init_document(uploaded_file)
@@ -30,6 +30,8 @@ class DocumentManager
       
       break if not File.exists? @path+"/"+new_file_name
     end
+
+    Dir.mkdir(@path) unless File.directory?(@path)
     
     FileUtils.move(uploaded_file.tempfile.path, @path+"/"+new_file_name)
     

@@ -5,6 +5,13 @@ class Car < ActiveRecord::Base
   
   belongs_to :photo, class_name: 'Document', foreign_key: 'photo_id'
 
+  def as_json(options={})
+    h = super(options)
+    h[:photo] = self.photo
+
+    h
+  end
+
   private 
   
   def validate_registration_number

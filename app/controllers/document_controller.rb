@@ -16,4 +16,8 @@ class DocumentController < ApplicationController
       send_file document.path_to_file, type: 'image/png', disposition: 'inline', filename: document.original_filename
     end
   end
+
+  def documentJSONForCar
+
+  end
 end
