@@ -22,9 +22,13 @@ class DocumentManager
   def init_document(uploaded_file)
     file_name = nil
     new_file_name = nil
+
+    if uploaded_file.class != File
+      uploaded_file = uploaded_file.tempfile
+    end
     
     loop do 
-      path = Pathname.new(uploaded_file.tempfile.path)
+      path = Pathname.new(uploaded_file.path)
       file_name = path.basename
       new_file_name = generate_new_name(path.extname) 
       
@@ -33,10 +37,10 @@ class DocumentManager
 
     Dir.mkdir(@path) unless File.directory?(@path)
     
-    FileUtils.move(uploaded_file.tempfile.path, @path+"/"+new_file_name)
+    FileUtils.move(uploaded_file.path, @path+"/"+new_file_name)
     
     Document.new({
-        original_filename: uploaded_file.original_filename, 
+        original_filename: "something ", #uploaded_file.original_filename,
         real_filename: new_file_name,
         path: @path
     })

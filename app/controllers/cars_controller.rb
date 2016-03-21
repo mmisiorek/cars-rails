@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'tempfile'
 
 class CarsController < ApplicationController
   layout "application"
@@ -70,7 +71,7 @@ class CarsController < ApplicationController
 
         format.json do
           render :json => {
-                    :success => false, 
+                    :success => false,
                     :errors => @car.errors.full_messages
                  }
         end
@@ -80,13 +81,22 @@ class CarsController < ApplicationController
   
   def update
     obj_params = car_params
-    if obj_params[:photo] 
-      documentManager = ApplicationHelper::DocumentManager.new 
+
+    if obj_params[:photo_base64]
+      old_photo_file = File.open(Dir::Tmpname.make_tmpname("something", nil), "wb+")
+      old_photo_file.write(Base64.decode64(obj_params[:photo_base64].split(",")[1]))
+
+      obj_params[:photo] = old_photo_file
+      obj_params.delete :photo_base64
+    end
+
+    if obj_params[:photo]
+      documentManager = ApplicationHelper::DocumentManager.new
       obj_params[:photo] = documentManager.init_document(obj_params[:photo])
-    end 
-    
+    end
+
     @car = Car.find(params[:id])
-    
+
     if obj_params[:photo]
       old_photo_path = @car.photo ? @car.photo.path_to_file : nil
     end
@@ -130,7 +140,7 @@ class CarsController < ApplicationController
   private
 
   def car_params
-    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo)
+    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo, :photo_base64)
   end
   
 end
