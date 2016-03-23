@@ -20,16 +20,22 @@ class DocumentManager
   end
   
   def init_document(uploaded_file)
-    file_name = nil
     new_file_name = nil
+    uploaded_file_path = nil
+    uploaded_file_original_name = nil
 
-    if uploaded_file.class != File
-      uploaded_file = uploaded_file.tempfile
+    if uploaded_file.class == File
+      uploaded_file_path = uploaded_file.tempfile.path
+      uploaded_file_original_name = uploaded_file.original_filename
+    elsif uploaded_file.class <= Hash
+      uploaded_file_path = uploaded_file[:file].path
+      uploaded_file_original_name = uploaded_file[:original_filename]
+    else
+      raise Exception.new("Not supported")
     end
     
     loop do 
-      path = Pathname.new(uploaded_file.path)
-      file_name = path.basename
+      path = Pathname.new(uploaded_file_path)
       new_file_name = generate_new_name(path.extname) 
       
       break if not File.exists? @path+"/"+new_file_name
@@ -37,10 +43,10 @@ class DocumentManager
 
     Dir.mkdir(@path) unless File.directory?(@path)
     
-    FileUtils.move(uploaded_file.path, @path+"/"+new_file_name)
+    FileUtils.move(uploaded_file_path, @path+"/"+new_file_name)
     
     Document.new({
-        original_filename: "something ", #uploaded_file.original_filename,
+        original_filename: uploaded_file_original_name,
         real_filename: new_file_name,
         path: @path
     })

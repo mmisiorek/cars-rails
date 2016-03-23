@@ -45,6 +45,8 @@ class CarsController < ApplicationController
     obj_params = car_params
     documentManager = ApplicationHelper::DocumentManager.new
 
+    base64ToFile(obj_params)
+
     if obj_params[:photo] != nil
       obj_params[:photo] = documentManager.init_document(obj_params[:photo])
     end
@@ -82,13 +84,7 @@ class CarsController < ApplicationController
   def update
     obj_params = car_params
 
-    if obj_params[:photo_base64]
-      old_photo_file = File.open(Dir::Tmpname.make_tmpname("something", nil), "wb+")
-      old_photo_file.write(Base64.decode64(obj_params[:photo_base64].split(",")[1]))
-
-      obj_params[:photo] = old_photo_file
-      obj_params.delete :photo_base64
-    end
+    base64ToFile(obj_params)
 
     if obj_params[:photo]
       documentManager = ApplicationHelper::DocumentManager.new
@@ -140,7 +136,22 @@ class CarsController < ApplicationController
   private
 
   def car_params
-    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo, :photo_base64)
+    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo, :photo_base64, :photo_original_filename)
+  end
+
+  def base64ToFile(obj_params)
+    if obj_params[:photo_base64] and obj_params[:photo_original_filename]
+      old_photo_file = File.open(Dir::Tmpname.make_tmpname(obj_params[:photo_original_filename], nil), "wb+")
+      old_photo_file.write(Base64.decode64(obj_params[:photo_base64].split(",")[1]))
+      old_photo_file.close
+
+      obj_params[:photo] = {
+          :file => old_photo_file,
+          :original_filename => obj_params[:photo_original_filename]
+      }
+      obj_params.delete :photo_base64
+      obj_params.delete :photo_original_filename
+    end
   end
   
 end
