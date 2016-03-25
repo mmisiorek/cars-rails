@@ -24,7 +24,7 @@ class DocumentManager
     uploaded_file_path = nil
     uploaded_file_original_name = nil
 
-    if uploaded_file.class == File
+    if uploaded_file.class == ActionDispatch::Http::UploadedFile
       uploaded_file_path = uploaded_file.tempfile.path
       uploaded_file_original_name = uploaded_file.original_filename
     elsif uploaded_file.class <= Hash

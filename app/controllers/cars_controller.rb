@@ -99,6 +99,8 @@ class CarsController < ApplicationController
     
     if @car.update_attributes(obj_params)
 
+      @car.save
+
       if obj_params[:photo] != nil and old_photo_path != nil
         FileUtils.rm old_photo_path
       end
@@ -136,21 +138,21 @@ class CarsController < ApplicationController
   private
 
   def car_params
-    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo, :photo_base64, :photo_original_filename)
+    params.require(:car).permit(:brand, :model, :is_available, :manufactured_date, :registration_number, :photo, :photo_base64 => [:data, :original_filename])
   end
 
   def base64ToFile(obj_params)
-    if obj_params[:photo_base64] and obj_params[:photo_original_filename]
-      old_photo_file = File.open(Dir::Tmpname.make_tmpname(obj_params[:photo_original_filename], nil), "wb+")
-      old_photo_file.write(Base64.decode64(obj_params[:photo_base64].split(",")[1]))
+    if obj_params.key? :photo_base64
+      old_photo_file = File.open(Dir::Tmpname.make_tmpname(obj_params[:photo_base64][:original_filename], nil), "wb+")
+      old_photo_file.write(Base64.decode64(obj_params[:photo_base64][:data].split(",")[1]))
       old_photo_file.close
 
       obj_params[:photo] = {
           :file => old_photo_file,
-          :original_filename => obj_params[:photo_original_filename]
+          :original_filename => obj_params[:photo_base64][:original_filename]
       }
+
       obj_params.delete :photo_base64
-      obj_params.delete :photo_original_filename
     end
   end
   
