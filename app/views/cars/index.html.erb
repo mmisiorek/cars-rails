@@ -50,7 +50,12 @@
                     <td><%= car.id %></td>
                     <td><%= car.brand %></td>
                     <td><%= car.model %></td>
-                    <td><%= car.manufactured_date.strftime("%Y-%m-%d") %></td>
+                    <td>
+                      <% if car.manufactured_date %>
+                        <%= car.manufactured_date.strftime("%Y-%m-%d") %></td>
+                      <% else %>
+                        No date
+                      <% end %>
                     <td>
                       <% if car.is_available %>
                         <span class="glyphicon glyphicon-ok"></span>
