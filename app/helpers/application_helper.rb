@@ -15,8 +15,9 @@ def self.generate_random_file_name(extension)
 end
   
 class DocumentManager 
-  def initialize()
+  def initialize(saved_user)
     @path = File.expand_path("~")+"/rails-pics"
+    @saved_user = saved_user
   end
   
   def init_document(uploaded_file)
@@ -48,7 +49,8 @@ class DocumentManager
     Document.new({
         original_filename: uploaded_file_original_name,
         real_filename: new_file_name,
-        path: @path
+        path: @path,
+        user: @saved_user
     })
   end
   

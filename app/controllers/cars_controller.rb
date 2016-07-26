@@ -21,6 +21,10 @@ class CarsController < ApplicationController
     @activePage = "carDetails"
     @car = Car.find(params[:id])
 
+    if @saved_user
+      @saved_user_ability.authorize! :view, @car
+    end
+
     respond_to do |format|
       format.html
       format.json { render :json => @car }
@@ -39,11 +43,21 @@ class CarsController < ApplicationController
     @pageTitle = "Edit car #"+params[:id]
 
     @car = Car.find(params[:id])
+
+    if @saved_user
+      @saved_user_ability.authorize! :edit, @car
+    else
+      raise CanCan::AccessDenied.new("Access denied")
+    end
   end
 
   def create
+    if not @saved_user
+      raise CanCan::AccessDenied.new("Access denied")
+    end
+
     obj_params = car_params
-    documentManager = ApplicationHelper::DocumentManager.new
+    documentManager = ApplicationHelper::DocumentManager.new @saved_user
 
     base64ToFile(obj_params)
 
@@ -52,6 +66,7 @@ class CarsController < ApplicationController
     end
 
     @car = Car.create(obj_params)
+    @car.user = @saved_user
     if @car.valid?
       @car.save
 
@@ -87,11 +102,17 @@ class CarsController < ApplicationController
     base64ToFile(obj_params)
 
     if obj_params[:photo]
-      documentManager = ApplicationHelper::DocumentManager.new
+      documentManager = ApplicationHelper::DocumentManager.new @saved_user
       obj_params[:photo] = documentManager.init_document(obj_params[:photo])
     end
 
     @car = Car.find(params[:id])
+
+    if @saved_user
+      @saved_user_ability.authorize! :edit, @car
+    else
+      raise CanCan::AccessDenied.new("Access denied")
+    end
 
     if obj_params[:photo]
       old_photo_path = @car.photo ? @car.photo.path_to_file : nil
@@ -129,6 +150,12 @@ class CarsController < ApplicationController
 
   def destroy
     @car = Car.find(params[:id])
+
+    if @saved_user
+      @saved_user_ability.authorize! :delete, @car
+    else
+      raise CanCan::AccessDenied.new("Access Denied")
+    end
 
     @car.destroy
 

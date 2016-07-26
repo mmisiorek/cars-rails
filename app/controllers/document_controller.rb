@@ -1,6 +1,10 @@
 class DocumentController < ApplicationController
   def show
     document = Document.find(params[:id])
+
+    if @saved_user
+      @saved_user_ability.authorize! :view, document
+    end
     
     if document.token != params[:token]
       head :forbidden

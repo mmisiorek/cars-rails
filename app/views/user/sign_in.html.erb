@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="panel-header">
+      <h2><%= @pageTitle %></h2>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <%= form_for(@user, url: {controller: "user", action: "login"}, method: "POST") do |f| %>
+
+            <div class="row">
+              <div class="col-md-4">
+                <%= label_tag(:username, "Username:", class: 'pull-right') %>
+              </div>
+              <div class="col-md-8">
+                <%= f.text_field(:username, class: "form-control") %>
+              </div>
+            </div>
+            <br><br>
+            <div class="row">
+              <div class="col-md-4">
+                <%= label_tag(:password, "Password:", class: 'pull-right') %>
+              </div>
+              <div class="col-md-8">
+                <%= f.password_field(:password, class: "form-control") %>
+              </div>
+            </div>
+            <br><br>
+            <div class="row">
+              <div class="col-md-12">
+                <%= f.submit("Submit", class: "btn btn-primary pull-right") %>
+              </div>
+            </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -4,6 +4,7 @@ class Car < ActiveRecord::Base
   validates :registration_number, uniqueness: true
   
   belongs_to :photo, class_name: 'Document', foreign_key: 'photo_id'
+  belongs_to :user
 
   def as_json(options={})
     h = super(options)

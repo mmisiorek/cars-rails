@@ -1,5 +1,7 @@
 class Document < ActiveRecord::Base
   validates :real_filename, uniqueness: true
+
+  belongs_to :user
   
   before_create :add_token_before_create
   

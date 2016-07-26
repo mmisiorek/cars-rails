@@ -1,3 +1,5 @@
+require 'BCrypt'
+
 class UserController < ApplicationController
 
   def sign_up
@@ -13,7 +15,44 @@ class UserController < ApplicationController
 
     @user = User.new(user_params)
 
-    abort params.inspect
+    if @user.valid?
+      @user.save
+
+      respond_to do |format|
+        format.html do
+          render :template => 'user/registered'
+        end
+      end
+    end
+  end
+
+  def sign_in
+    if not @user
+      @pageTitle = "Sign in"
+      @user = User.new
+    else
+      redirect_to '/'
+    end
+  end
+
+  def login
+    @user = User.find_by(:username => user_params[:username])
+
+    if @user.password == BCrypt::Engine.hash_secret(user_params[:password], @user.salt)
+      session[:user_password] = @user.password
+      session[:user_id] = @user.id
+
+      redirect_to "/"
+    else
+      redirect_to :action => 'sign_in'
+    end
+  end
+
+  def logout
+    session.delete(:user_password)
+    session.delete(:user_id)
+
+    redirect_to request.referer
   end
 
   private

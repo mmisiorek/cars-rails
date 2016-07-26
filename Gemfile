@@ -48,3 +48,4 @@ end
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'mini_magick'
+gem 'cancancan'
