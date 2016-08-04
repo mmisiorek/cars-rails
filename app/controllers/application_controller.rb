@@ -16,6 +16,15 @@ class ApplicationController < ActionController::Base
         session.delete(:user_id)
         session.delete(:user_password)
       end
+    elsif params[:user_token] != nil
+      token = UserToken.find_by({:token => params[:user_token], :is_valid => true})
+
+      if token != nil
+        @saved_user = token.user
+        @saved_user_ability = Ability.new(@saved_user)
+      else
+
+      end
     end
   end
 

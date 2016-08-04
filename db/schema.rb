@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725193454) do
+ActiveRecord::Schema.define(version: 20160730112425) do
 
   create_table "cars", force: :cascade do |t|
     t.datetime "created_at",          null: false
@@ -37,6 +37,9 @@ ActiveRecord::Schema.define(version: 20160725193454) do
     t.string   "token"
     t.integer  "user_id"
   end
+
+# Could not dump table "user_tokens" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

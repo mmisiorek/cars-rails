@@ -6,6 +6,13 @@ class User < ActiveRecord::Base
   has_many :documents
   has_many :cars
 
+  def as_json(options={})
+    h = super(options)
+    h = h.except("password", "salt", "updated_at")
+
+    h
+  end
+
   private
 
   def password_encode

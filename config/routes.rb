@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'user/login' => "user#sign_in"
   post 'user/login' => "user#login"
   get 'user/logout' => "user#logout"
+  post 'user/logout' => "user#logout"
   get 'document/:id/:token/:width/:height' => 'document#show'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

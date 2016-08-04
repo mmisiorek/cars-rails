@@ -9,6 +9,7 @@ class Car < ActiveRecord::Base
   def as_json(options={})
     h = super(options)
     h[:photo] = self.photo
+    h[:user] = self.user
 
     h
   end
